@@ -29,7 +29,7 @@ topics.final =
   mutate(description = paste0(topic,collapse = ", ")) %>% 
   ungroup() %>% 
   distinct(topic_id,.keep_all = T) %>% 
-  select(topic_id,description) %>% 
+  dplyr::select(topic_id,description) %>% 
   mutate(mod = as.numeric(topic_id) %% 10,
          meta_id = floor(as.numeric(topic_id)/10)*10)
 
@@ -47,24 +47,24 @@ areas =  meta_topics %>%
   mutate(stay = topic_id == area_id) %>% 
   filter(stay) %>% 
   slice(1:3) %>% 
-  select(topic_id,description)
+  dplyr::select(topic_id,description)
 
 #Main data
 main =  meta_topics %>%
   mutate(stay = topic_id == main_id) %>% 
   filter(stay) %>% 
-  select(topic_id,description) %>% 
+  dplyr::select(topic_id,description) %>% 
   anti_join(areas) 
 
 
 #Meta data
 meta = meta_topics %>%
-  select(topic_id,description) %>% 
+  dplyr::select(topic_id,description) %>% 
   anti_join(main) %>% 
   anti_join(areas) 
 
 meta_topics= meta_topics %>% 
-  select(meta_id:area_id) %>% 
+  dplyr::select(meta_id:area_id) %>% 
   left_join(areas %>% 
               setNames(c("area_id","area_desc"))) %>% 
   left_join(main%>% 
@@ -97,7 +97,7 @@ immigration = c(3750,3751,3752,3753,3756,3757,3411,3413)
 
 # Add meta ID
 tv_policy = tv %>% 
-  select(id_sdg:v05,v08,b02,id_bei,b05,b06:b09,b10,b15,b16,b18a:b18d) %>% 
+  dplyr::select(id_sdg:v05,v08,b02,id_bei,b05,b06:b09,b10,b15,b16,b18a:b18d) %>% 
   mutate(meta_top = floor(b16/10)*10) %>%
   mutate(main_top = floor(b16/100)*100)
 
@@ -106,7 +106,7 @@ tv_policy =
   tv_policy %>% 
   mutate(month = ifelse(v04<10,paste0("0",v04),v04),
          date = paste0("20",v03,"-",month,"-",v05) %>% as.POSIXct()) %>% 
-  select(-c(month,v03,v04,v05))
+  dplyr::select(-c(month,v03,v04,v05))
 
 
 ##############
@@ -115,7 +115,7 @@ tv_policy =
 
 # Add meta ID
 print_policy = print %>% 
-  select(id_asg:v05,id_bei,b06,b08:b10,b15,b16,b18a:b18d) %>% 
+  dplyr::select(id_asg:v05,id_bei,b06,b08:b10,b15,b16,b18a:b18d) %>% 
   mutate(meta_top = floor(b16/10)*10) %>%
   mutate(main_top = floor(b16/100)*100)
 
@@ -124,7 +124,23 @@ print_policy =
   print_policy %>% 
   mutate(month = ifelse(v04<10,paste0("0",v04),v04),
          date = paste0("20",v03,"-",month,"-",v05) %>% as.POSIXct()) %>% 
-  select(-c(month,v03,v04,v05))
+  dplyr::select(-c(month,v03,v04,v05))
+
+
+# Statistics on Immifration related contributions
+
+# TV
+tv_policy %>% 
+  filter(b16 %in% immigration) %>% 
+  mutate(n = n()) %>% 
+  mutate(sdg = length(unique(id_sdg))) %>% 
+  distinct(n,sdg)
+
+print_policy %>% 
+  filter(b16 %in% immigration) %>% 
+  mutate(n = n()) %>% 
+  mutate(asg = length(unique(id_asg))) %>% 
+  distinct(n,asg)
 
 #############
 # SAVE DATA #
@@ -134,3 +150,7 @@ saveRDS(print_policy,"data/print_policy.rds")
 saveRDS(tv_policy,"data/tv_policy.rds")
 saveRDS(meta_topics,"data/media_meta_topics.rds")
 saveRDS(immigration,"data/immi_topic_vec.rds")
+
+
+
+

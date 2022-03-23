@@ -13,7 +13,7 @@ source(here("functions_model_creation.R"))
 library(showtext)
 
 # Font for plots
-#font_add_google("Noto Serif","noto")
+font_add_google("Noto Serif","noto")
 showtext_auto()
 ##########################
 ### TRANSFORM THE DATA ###
@@ -320,7 +320,6 @@ irf.monday.7.7 = lapply(model.monday.lag1, function(x){
 ###################
 ### IMPUTE DATA ###
 ###################
-here()
 source(here("plot_irf.R"))
 media.response(irf.impute.7.7, response_of = "share.tv")
 media.response(irf.impute.7.7, response_of = "share.print")
@@ -344,5 +343,18 @@ party.response(irf.monday.7.7,response_of = "party",impulse_of = "share.tv")
 
 party.response(irf.monday.7.7,response_of = "share.print",impulse_of = "party")
 party.response(irf.monday.7.7,response_of = "share.tv",impulse_of = "party")
+
+# INCLUDING LINKE AND FDP
+party.response.full(irf.impute.7.7,response_of = "party",impulse_of = "share.print")
+party.response.full(irf.impute.7.7,response_of = "party",impulse_of = "share.tv")
+
+party.response.full(irf.impute.7.7,response_of = "share.print",impulse_of = "party")
+party.response.full(irf.impute.7.7,response_of = "share.tv",impulse_of = "party")
+
+party.response.full(irf.monday.7.7,response_of = "party",impulse_of = "share.print")
+party.response.full(irf.monday.7.7,response_of = "party",impulse_of = "share.tv")
+
+party.response.full(irf.monday.7.7,response_of = "share.print",impulse_of = "party")
+party.response.full(irf.monday.7.7,response_of = "share.tv",impulse_of = "party")
 
 
