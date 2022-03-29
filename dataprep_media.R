@@ -136,11 +136,30 @@ tv_policy %>%
   mutate(sdg = length(unique(id_sdg))) %>% 
   distinct(n,sdg)
 
+# Print
 print_policy %>% 
   filter(b16 %in% immigration) %>% 
   mutate(n = n()) %>% 
   mutate(asg = length(unique(id_asg))) %>% 
   distinct(n,asg)
+
+# Most relevant Meta Topics
+
+# TV
+
+tv_policy %>% 
+  filter(meta_top>0) %>% 
+  group_by(meta_top) %>% 
+  summarise(n=n()) %>% 
+  arrange(desc(n))
+
+# Print
+
+print_policy %>% 
+  filter(meta_top>0) %>% 
+  group_by(meta_top) %>% 
+  summarise(n=n()) %>% 
+  arrange(desc(n))
 
 #############
 # SAVE DATA #
