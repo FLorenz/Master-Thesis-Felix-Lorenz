@@ -21,7 +21,7 @@ Folder conatains all tables of the thesis in tex format. The suffix "impute" and
 
 
 ## Plots
-Folder contains all descriptive plots as well as the IRFs from the results part. The suffix "impute" and "monday" indicate the different imputation approaches.
+Folder contains all descriptive plots as well as the IRFs from the results part. The suffix "impute" and "monday" indicate the different imputation approaches. The folder also contains the visualised IRFs for all parties as found in the appendix of the thesis.
 
 ## IMPORTANT REMARK
 Twitter does not allow sharing full text of Tweets. Therefore immi_tweets.rds and full_data_fin.rds do not contain any text but only the IDs of the Tweets, the author ID, whether the Tweet is a retweet and the time it was created. For this reason it is not possible to run immi_tweet_selection.R since it is relying on the text of the tweets. However, all relevant datafiles are present in the data folder.
